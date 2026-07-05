@@ -1,0 +1,23 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import LandingPage from './pages/LandingPage';
+import LoginPage from './pages/LoginPage';
+import CheckoutPage from './pages/CheckoutPage';
+import DashboardPage from './pages/DashboardPage';
+import IntakeFormPage from './pages/IntakeFormPage';
+import AdminHubPage from './pages/AdminHubPage';
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/intake" element={<IntakeFormPage />} />
+        <Route path="/admin" element={<AdminHubPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
