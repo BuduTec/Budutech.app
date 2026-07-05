@@ -1,0 +1,6 @@
+{
+  "name": "BuduFlow CAC Intake Wizard",
+  "description": "An intelligent, AI-assisted onboarding and CAC registration intake wizard supporting Business Name, Limited Liability Company, and NGO formations in Nigeria.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
