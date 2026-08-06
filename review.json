@@ -1,0 +1,29 @@
+{
+  "reviews": [
+    {
+      "name": "Your Google Review #1",
+      "rating": 5,
+      "text": "Paste a real Google Business Profile review here.",
+      "source": "Google Business Profile"
+    },
+    {
+      "name": "Your Google Review #2",
+      "rating": 5,
+      "text": "Use a review that mentions trust, speed or professionalism.",
+      "source": "Google Business Profile"
+    },
+    {
+      "name": "Your Google Review #3",
+      "rating": 5,
+      "text": "Use a review that says the service was smooth or well-explained.",
+      "source": "Google Business Profile"
+    },
+    {
+      "name": "Your Google Review #4",
+      "rating": 5,
+      "text": "Add one more strong review once you are ready.",
+      "source": "Google Business Profile"
+    }
+  ]
+}
+
