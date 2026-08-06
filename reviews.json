@@ -1,0 +1,28 @@
+{
+  "reviews": [
+    {
+      "name": "Google Review #1",
+      "rating": 5,
+      "text": "Replace this with your real Google review about speed and professionalism.",
+      "source": "Google Business Profile"
+    },
+    {
+      "name": "Google Review #2",
+      "rating": 5,
+      "text": "Replace this with a review that mentions trust and clear communication.",
+      "source": "Google Business Profile"
+    },
+    {
+      "name": "Google Review #3",
+      "rating": 5,
+      "text": "Replace this with a review that mentions a smooth registration process.",
+      "source": "Google Business Profile"
+    },
+    {
+      "name": "Google Review #4",
+      "rating": 5,
+      "text": "Replace this with a review that mentions value and guidance.",
+      "source": "Google Business Profile"
+    }
+  ]
+}
