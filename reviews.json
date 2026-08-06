@@ -1,28 +1,179 @@
 {
+  "business": "BUDUTECH SERVICES LTD",
+  "rating": 4.6,
+  "total_reviews": 17,
+  "source": "Google Business Profile",
+  "review_url": "https://g.page/r/CZvbDAseY6mOEBM/review",
   "reviews": [
     {
-      "name": "Google Review #1",
+      "id": 1,
+      "name": "Jesse Ekwe",
       "rating": 5,
-      "text": "Replace this with your real Google review about speed and professionalism.",
-      "source": "Google Business Profile"
+      "date": "28 Jun 2025",
+      "verified": true,
+      "source": "Google",
+      "avatar": "J",
+      "text": "Thank you so much for helping me with the CAC registration. I truly appreciate the time, effort and guidance you put into making the process smooth and successful. Your support means a lot to me, and I'm really grateful for your help in getting my business properly registered."
     },
     {
-      "name": "Google Review #2",
+      "id": 2,
+      "name": "Richard Banigo",
       "rating": 5,
-      "text": "Replace this with a review that mentions trust and clear communication.",
-      "source": "Google Business Profile"
+      "date": "26 weeks ago",
+      "verified": true,
+      "source": "Google",
+      "avatar": "R",
+      "text": "Very excellent service. Fast and reliable."
     },
     {
-      "name": "Google Review #3",
+      "id": 3,
+      "name": "Kingdom Chiamaka",
       "rating": 5,
-      "text": "Replace this with a review that mentions a smooth registration process.",
-      "source": "Google Business Profile"
+      "date": "25 Jun 2025",
+      "verified": true,
+      "source": "Google",
+      "avatar": "K",
+      "text": "Won a free CAC registration and got my business registered stress free. Documents were delivered officially via email. Super professional even without payment. If you need CAC registration in Nigeria, the UK or more, BuduTech is your go to."
     },
     {
-      "name": "Google Review #4",
+      "id": 4,
+      "name": "Mercy Aaron",
       "rating": 5,
-      "text": "Replace this with a review that mentions value and guidance.",
-      "source": "Google Business Profile"
+      "date": "23 May 2025",
+      "verified": true,
+      "source": "Google",
+      "avatar": "M",
+      "text": "BuduTech Digital Services provided me with quick and reliable services for CAC registration, SMEDAN and other online services. More grease to their elbows."
+    },
+    {
+      "id": 5,
+      "name": "Adeleke Samson Oluwaseun",
+      "rating": 5,
+      "date": "22 May 2025",
+      "verified": true,
+      "source": "Google",
+      "avatar": "A",
+      "text": "Great service, fast CAC registration and good customer relationship."
+    },
+    {
+      "id": 6,
+      "name": "Omolola Elizabeth",
+      "rating": 5,
+      "date": "40 weeks ago",
+      "verified": true,
+      "source": "Google",
+      "avatar": "O",
+      "text": "His service is the best ever I have seen and he's very good at what he does."
+    },
+    {
+      "id": 7,
+      "name": "Dike Testimony",
+      "rating": 5,
+      "date": "31 Jul 2025",
+      "verified": true,
+      "source": "Google",
+      "avatar": "D",
+      "text": "Great, fast and reliable service."
+    },
+    {
+      "id": 8,
+      "name": "Abasiama Daniel",
+      "rating": 5,
+      "date": "22 May 2025",
+      "verified": true,
+      "source": "Google",
+      "avatar": "A",
+      "text": "Great services, fast CAC registration."
+    },
+    {
+      "id": 9,
+      "name": "Ishaq Bankole",
+      "rating": 5,
+      "date": "30 May 2025",
+      "verified": true,
+      "source": "Google",
+      "avatar": "I",
+      "text": "He doesn't joke with professionalism and is a very honest guy."
+    },
+    {
+      "id": 10,
+      "name": "Ibrahim Abdullahi",
+      "rating": 5,
+      "date": "31 May 2025",
+      "verified": true,
+      "source": "Google",
+      "avatar": "I",
+      "text": "Fast and reliable."
+    },
+    {
+      "id": 11,
+      "name": "Francis Philimon",
+      "rating": 5,
+      "date": "40 weeks ago",
+      "verified": true,
+      "source": "Google",
+      "avatar": "F",
+      "text": "Great services."
+    },
+    {
+      "id": 12,
+      "name": "David Shola",
+      "rating": 5,
+      "date": "22 May 2025",
+      "verified": true,
+      "source": "Google",
+      "avatar": "D",
+      "text": "Excellent job."
+    },
+    {
+      "id": 13,
+      "name": "Uwemedimoh Edoho",
+      "rating": 5,
+      "date": "3 days ago",
+      "verified": true,
+      "source": "Google",
+      "avatar": "U",
+      "text": "Incredible wonderful."
+    },
+    {
+      "id": 14,
+      "name": "Mercy Ebere",
+      "rating": 5,
+      "date": "5 days ago",
+      "verified": true,
+      "source": "Google",
+      "avatar": "M",
+      "text": "BuduTech Digital Services provided reliable services in CAC registration and other online applications. Bravo!"
+    },
+    {
+      "id": 15,
+      "name": "Education Technology",
+      "rating": 5,
+      "date": "5 days ago",
+      "verified": true,
+      "source": "Google",
+      "avatar": "E",
+      "text": "He attends to his work professionally."
+    },
+    {
+      "id": 16,
+      "name": "Mohammed Abubakar Sodi",
+      "rating": 5,
+      "date": "5 days ago",
+      "verified": true,
+      "source": "Google",
+      "avatar": "M",
+      "text": "His service is the best I have ever seen and he is doing it to the best of his knowledge."
+    },
+    {
+      "id": 17,
+      "name": "Oladele Bless",
+      "rating": 5,
+      "date": "5 Aug 2025",
+      "verified": true,
+      "source": "Google",
+      "avatar": "O",
+      "text": "⭐⭐⭐⭐⭐"
     }
   ]
 }
