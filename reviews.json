@@ -1,7 +1,7 @@
 {
   "business": "BUDUTECH SERVICES LTD",
-  "rating": 4.6,
-  "total_reviews": 17,
+  "rating": 4.7,
+  "total_reviews": 20,
   "source": "Google Business Profile",
   "review_url": "https://g.page/r/CZvbDAseY6mOEBM/review",
   "reviews": [
@@ -19,7 +19,7 @@
       "id": 2,
       "name": "Richard Banigo",
       "rating": 5,
-      "date": "26 weeks ago",
+      "date": null,
       "verified": true,
       "source": "Google",
       "avatar": "R",
@@ -59,7 +59,7 @@
       "id": 6,
       "name": "Omolola Elizabeth",
       "rating": 5,
-      "date": "40 weeks ago",
+      "date": null,
       "verified": true,
       "source": "Google",
       "avatar": "O",
@@ -109,7 +109,7 @@
       "id": 11,
       "name": "Francis Philimon",
       "rating": 5,
-      "date": "40 weeks ago",
+      "date": null,
       "verified": true,
       "source": "Google",
       "avatar": "F",
@@ -129,7 +129,7 @@
       "id": 13,
       "name": "Uwemedimoh Edoho",
       "rating": 5,
-      "date": "3 days ago",
+      "date": null,
       "verified": true,
       "source": "Google",
       "avatar": "U",
@@ -139,7 +139,7 @@
       "id": 14,
       "name": "Mercy Ebere",
       "rating": 5,
-      "date": "5 days ago",
+      "date": null,
       "verified": true,
       "source": "Google",
       "avatar": "M",
@@ -149,7 +149,7 @@
       "id": 15,
       "name": "Education Technology",
       "rating": 5,
-      "date": "5 days ago",
+      "date": null,
       "verified": true,
       "source": "Google",
       "avatar": "E",
@@ -159,7 +159,7 @@
       "id": 16,
       "name": "Mohammed Abubakar Sodi",
       "rating": 5,
-      "date": "5 days ago",
+      "date": null,
       "verified": true,
       "source": "Google",
       "avatar": "M",
@@ -175,5 +175,6 @@
       "avatar": "O",
       "text": "⭐⭐⭐⭐⭐"
     }
-  ]
+  ],
+  "featured_reviews_count": 17
 }

@@ -8,13 +8,25 @@ const packagePrices = {
   "NGO / Incorporated Trustees": { Basic: "₦130,000", Premium: "₦180,000" }
 };
 
+function numericPrice(price = "") {
+  const value = Number(String(price).replace(/[^\d.]/g, ""));
+  return Number.isFinite(value) ? value : undefined;
+}
+
 function track(eventName, data = {}) {
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({ event: eventName, ...data });
 
   if (typeof window.fbq === "function") {
-    try { window.fbq("trackCustom", eventName, data); } catch (e) {}
+    try {
+      if (eventName === "Lead") {
+        window.fbq("track", "Lead", data);
+      } else {
+        window.fbq("trackCustom", eventName, data);
+      }
+    } catch (e) {}
   }
+
   if (typeof window.gtag === "function") {
     try { window.gtag("event", eventName, data); } catch (e) {}
   }
@@ -22,7 +34,10 @@ function track(eventName, data = {}) {
 
 function whatsappUrl(service, packageName = "") {
   const price = packagePrices[service]?.[packageName] || "";
-  const packageLine = packageName ? `${packageName} Package${price ? ` (${price})` : ""}` : "Not yet selected";
+  const packageLine = packageName
+    ? `${packageName} Package${price ? ` (${price})` : ""}`
+    : "Not yet selected";
+
   const message =
 `Hello BuduTech, I came from your CAC registration page and I'd like to proceed with my registration.
 
@@ -30,6 +45,7 @@ Registration type: ${service}
 Package: ${packageLine}
 
 Please confirm the requirements and next steps for me.`;
+
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
@@ -61,29 +77,36 @@ async function loadReviews() {
 
   try {
     const res = await fetch("reviews.json", { cache: "no-store" });
+    if (!res.ok) throw new Error(`Reviews request failed: ${res.status}`);
     const data = await res.json();
-    const reviews = data.reviews || data || [];
-    const total = reviews.reduce((sum, r) => sum + (Number(r.rating) || 5), 0);
+    const reviews = Array.isArray(data.reviews) ? data.reviews : [];
 
-    if (avg && reviews.length) avg.textContent = (total / reviews.length).toFixed(1);
-    if (count) count.textContent = String(reviews.length);
+    if (avg && Number.isFinite(Number(data.rating))) {
+      avg.textContent = Number(data.rating).toFixed(1);
+    }
+    if (count && Number.isFinite(Number(data.total_reviews))) {
+      count.textContent = String(data.total_reviews);
+    }
 
     if (grid) {
       grid.innerHTML = reviews.map(r => {
-        const stars = "★★★★★".slice(0, Math.max(0, Number(r.rating) || 5));
+        const rating = Math.min(5, Math.max(1, Number(r.rating) || 5));
+        const stars = "★★★★★".slice(0, rating);
+        const date = r.date ? `<small>${r.date}</small>` : "";
         return `
           <article class="review-card">
-            <div class="stars">${stars}</div>
+            <div class="stars" aria-label="${rating} out of 5 stars">${stars}</div>
             <p>“${r.text || ""}”</p>
             <strong>${r.name || "Google Review"}</strong>
             <small>${r.source || "Google Business Profile"}</small>
+            ${date}
           </article>
         `;
       }).join("");
     }
   } catch (e) {
     if (grid) {
-      grid.innerHTML = '<article class="review-card"><div class="stars">★★★★★</div><p>Paste your real Google Business Profile reviews in reviews.json.</p><strong>BuduTech</strong><small>Google Business Profile</small></article>';
+      grid.innerHTML = '<article class="review-card"><div class="stars">★★★★★</div><p>We are currently refreshing our review display. You can view all current reviews on our Google Business Profile.</p><strong>BuduTech Services LTD</strong><small>Google Business Profile</small></article>';
     }
   }
 }
@@ -91,31 +114,60 @@ async function loadReviews() {
 document.addEventListener("DOMContentLoaded", () => {
   updateMainWhatsApp();
   loadReviews();
-  track("LandingPageViewed");
 
-  document.getElementById("service")?.addEventListener("change", updateMainWhatsApp);
-  document.getElementById("package")?.addEventListener("change", updateMainWhatsApp);
+  track("ViewContent", {
+    content_name: "CAC Registration Landing Page",
+    content_category: "Business Registration"
+  });
 
-  document.querySelectorAll("[data-wa]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const s = btn.dataset.service || document.getElementById("service")?.value || "CAC Registration";
-      const p = btn.dataset.package || document.getElementById("package")?.value || "";
-      btn.href = whatsappUrl(s, p);
-      track("Lead", { service: s, package: p, price: packagePrices[s]?.[p] || "" });
+  document.getElementById("service")?.addEventListener("change", () => {
+    updateMainWhatsApp();
+    const service = document.getElementById("service")?.value || "";
+    track("RegistrationTypeSelected", { service });
+  });
+
+  document.getElementById("package")?.addEventListener("change", () => {
+    updateMainWhatsApp();
+    const service = document.getElementById("service")?.value || "";
+    const pkg = document.getElementById("package")?.value || "";
+    track("PackageSelected", {
+      service,
+      package: pkg,
+      price: packagePrices[service]?.[pkg] || ""
     });
   });
 
-  document.querySelectorAll(".package-card .btn").forEach(btn => {
+  document.querySelectorAll("[data-wa]").forEach(btn => {
     btn.addEventListener("click", () => {
-      const s = btn.dataset.service || "";
-      const p = btn.dataset.package || "";
-      track("PackageSelected", { service: s, package: p, price: packagePrices[s]?.[p] || "" });
+      const service = btn.dataset.service ||
+        document.getElementById("service")?.value ||
+        "CAC Registration";
+      const pkg = btn.dataset.package ||
+        document.getElementById("package")?.value ||
+        "";
+      const price = packagePrices[service]?.[pkg] || "";
+
+      btn.href = whatsappUrl(service, pkg);
+
+      track("PackageSelected", { service, package: pkg, price });
+
+      track("Lead", {
+        content_name: "WhatsApp Registration Lead",
+        service,
+        package: pkg,
+        value: numericPrice(price),
+        currency: "NGN"
+      });
+
+      track("WhatsAppLead", { service, package: pkg, price });
     });
   });
 
   document.querySelectorAll("details").forEach(d => {
     d.addEventListener("toggle", () => {
-      if (d.open) track("FAQOpened", { question: d.querySelector("summary")?.textContent || "" });
+      if (d.open) track("FAQOpened", {
+        question: d.querySelector("summary")?.textContent || ""
+      });
     });
   });
 
@@ -125,7 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
       scrolled = true;
       track("Scroll50Percent");
     }
-  });
+  }, { passive: true });
 
   setTimeout(() => track("Stayed30Seconds"), 30000);
 

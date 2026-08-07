@@ -50,3 +50,24 @@ footer{background:#06183f;color:#dbe6ff;padding:30px 0}.footer-inner{display:fle
   .nav-btn{display:none}.brand-text{font-size:11px}.hero h1{font-size:42px}.hero p,.hero-copy{font-size:17px}
   .steps{grid-template-columns:1fr}.section{padding:65px 0}.service-card,.package-card{padding:22px}.price{font-size:32px}.not-sure a{margin-left:0;width:100%}
 }
+
+
+/* Founder / trust proof */
+.proof{background:#f7f9fc}
+.proof-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:stretch}
+.proof-copy{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:34px;box-shadow:var(--shadow)}
+.proof-copy h2{font-size:clamp(30px,4vw,46px);line-height:1.08;margin:0 0 16px;letter-spacing:-.03em}
+.proof-copy p{color:var(--muted);font-size:17px}
+.proof-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.proof-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:25px;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:center}
+.proof-card strong{font-size:28px;color:var(--blue);line-height:1.1}
+.proof-card span{color:var(--muted);margin-top:7px;font-size:14px}
+.portrait{height:300px;border-radius:18px;overflow:hidden;background:#dfe7f7}
+.portrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:center top}
+
+@media (max-width:850px){
+  .proof-grid{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .proof-stats{grid-template-columns:1fr}
+}
