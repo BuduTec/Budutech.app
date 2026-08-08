@@ -1,12 +1,61 @@
 const WHATSAPP_NUMBER = "2349027591229";
 const GOOGLE_PROFILE_URL = "https://g.page/r/CZvbDAseY6mOEBM";
 const GOOGLE_REVIEW_URL = "https://g.page/r/CZvbDAseY6mOEBM/review";
+const ATTRIBUTION_STORAGE_KEY = "budutechAttribution";
+const ATTRIBUTION_KEYS = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "utm_term",
+  "fbclid",
+  "gclid"
+];
 
 const packagePrices = {
   "Business Name": { Basic: "₦34,999", Premium: "₦45,000" },
   "Limited Company": { Basic: "₦65,000", Premium: "₦84,999" },
   "NGO / Incorporated Trustees": { Basic: "₦130,000", Premium: "₦180,000" }
 };
+
+function sanitizeAttributionValue(value = "") {
+  return String(value).replace(/[^\w\-./:+% ]/g, "").trim().slice(0, 150);
+}
+
+function parseStoredAttribution() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(ATTRIBUTION_STORAGE_KEY) || "{}");
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch (e) {
+    return {};
+  }
+}
+
+function captureAttribution() {
+  const params = new URLSearchParams(window.location.search);
+  const current = {};
+
+  ATTRIBUTION_KEYS.forEach((key) => {
+    const value = sanitizeAttributionValue(params.get(key) || "");
+    if (value) current[key] = value;
+  });
+
+  if (Object.keys(current).length === 0) return parseStoredAttribution();
+
+  const stored = parseStoredAttribution();
+  const merged = {
+    ...stored,
+    ...current,
+    landing_path: window.location.pathname,
+    captured_at: new Date().toISOString()
+  };
+
+  try {
+    localStorage.setItem(ATTRIBUTION_STORAGE_KEY, JSON.stringify(merged));
+  } catch (e) {}
+
+  return merged;
+}
 
 function numericPrice(price = "") {
   const value = Number(String(price).replace(/[^\d.]/g, ""));
@@ -37,6 +86,14 @@ function whatsappUrl(service, packageName = "") {
   const packageLine = packageName
     ? `${packageName} Package${price ? ` (${price})` : ""}`
     : "Not yet selected";
+  const attribution = parseStoredAttribution();
+  const attributionDetails = ATTRIBUTION_KEYS
+    .filter((key) => attribution[key])
+    .map((key) => `${key}: ${attribution[key]}`)
+    .join("\n");
+  const attributionBlock = attributionDetails
+    ? `\n\nLead attribution:\n${attributionDetails}`
+    : "";
 
   const message =
 `Hello BuduTech, I came from your CAC registration page and I'd like to proceed with my registration.
@@ -44,19 +101,145 @@ function whatsappUrl(service, packageName = "") {
 Registration type: ${service}
 Package: ${packageLine}
 
-Please confirm the requirements and next steps for me.`;
+Please confirm the requirements and next steps for me.${attributionBlock}`;
 
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
+function buildAttributionPayload() {
+  const attribution = parseStoredAttribution();
+  const payload = {};
+
+  ATTRIBUTION_KEYS.forEach((key) => {
+    if (attribution[key]) payload[key] = attribution[key];
+  });
+
+  return payload;
+}
+
+function populateServiceOptions() {
+  const serviceSelect = document.getElementById("service");
+  if (!serviceSelect) return;
+
+  const services = Object.keys(packagePrices);
+  const currentValue = serviceSelect.value;
+
+  serviceSelect.innerHTML = '<option value="">Select registration type</option>';
+  services.forEach((service) => {
+    const option = document.createElement("option");
+    option.value = service;
+    option.textContent = service;
+    serviceSelect.appendChild(option);
+  });
+
+  if (services.includes(currentValue)) {
+    serviceSelect.value = currentValue;
+  }
+}
+
+function populatePackageOptions(service) {
+  const packageSelect = document.getElementById("package");
+  if (!packageSelect) return;
+
+  const packages = packagePrices[service] || {};
+  const packageNames = Object.keys(packages);
+  const currentValue = packageSelect.value;
+
+  packageSelect.innerHTML = '<option value="">Select package</option>';
+  packageSelect.disabled = packageNames.length === 0;
+
+  packageNames.forEach((pkg) => {
+    const option = document.createElement("option");
+    option.value = pkg;
+    option.textContent = `${pkg} (${packages[pkg]})`;
+    packageSelect.appendChild(option);
+  });
+
+  if (packageNames.includes(currentValue)) {
+    packageSelect.value = currentValue;
+  } else {
+    packageSelect.value = "";
+  }
+}
+
+function updateSelectedPriceDisplay(service, pkg) {
+  const selectedPrice = document.getElementById("selectedPrice");
+  if (!selectedPrice) return;
+
+  if (!service) {
+    selectedPrice.textContent = "Select your registration type to view package pricing.";
+    return;
+  }
+  if (!pkg) {
+    selectedPrice.textContent = "Select a package to continue to WhatsApp.";
+    return;
+  }
+
+  const price = packagePrices[service]?.[pkg] || "";
+  selectedPrice.textContent = price
+    ? `${service} • ${pkg} package: ${price}`
+    : `${service} • ${pkg} package selected`;
+}
+
 function updateMainWhatsApp() {
-  const service = document.getElementById("service")?.value || "Business Name";
-  const pkg = document.getElementById("package")?.value || "Basic";
+  const service = document.getElementById("service")?.value || "";
+  const pkg = document.getElementById("package")?.value || "";
   const button = document.getElementById("mainWhatsApp");
   const headerButton = document.getElementById("headerWhatsapp");
+  const stickyButton = document.querySelector(".sticky-wa");
   const url = whatsappUrl(service, pkg);
-  if (button) button.href = url;
-  if (headerButton) headerButton.href = url;
+  const canProceed = Boolean(service && pkg);
+  const fallbackUrl = "#packages";
+
+  if (button) button.href = canProceed ? url : fallbackUrl;
+  if (headerButton) headerButton.href = canProceed ? url : fallbackUrl;
+  if (stickyButton) stickyButton.href = canProceed ? url : fallbackUrl;
+  if (button) button.setAttribute("aria-disabled", String(!canProceed));
+
+  updateSelectedPriceDisplay(service, pkg);
+}
+
+function trackLead(service, pkg) {
+  const price = packagePrices[service]?.[pkg] || "";
+  const attributionPayload = buildAttributionPayload();
+
+  track("PackageSelected", { service, package: pkg, price });
+
+  track("Lead", {
+    content_name: "WhatsApp Registration Lead",
+    service,
+    package: pkg,
+    value: numericPrice(price),
+    currency: "NGN",
+    ...attributionPayload
+  });
+
+  track("WhatsAppLead", { service, package: pkg, price, ...attributionPayload });
+}
+
+function applyDynamicPricesToCards() {
+  document.querySelectorAll("[data-price-service][data-price-package]").forEach((node) => {
+    const service = node.getAttribute("data-price-service") || "";
+    const pkg = node.getAttribute("data-price-package") || "";
+    const price = packagePrices[service]?.[pkg];
+    if (price) node.textContent = price;
+  });
+}
+
+function setupBackToTop() {
+  const backToTop = document.getElementById("backToTop");
+  if (!backToTop) return;
+
+  const toggleBackToTop = () => {
+    backToTop.classList.toggle("visible", window.scrollY > 400);
+  };
+
+  window.addEventListener("scroll", toggleBackToTop, { passive: true });
+  toggleBackToTop();
+
+  backToTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 }
 
 async function loadReviews() {
@@ -112,8 +295,13 @@ async function loadReviews() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  captureAttribution();
+  populateServiceOptions();
+  populatePackageOptions("");
+  applyDynamicPricesToCards();
   updateMainWhatsApp();
   loadReviews();
+  setupBackToTop();
 
   track("ViewContent", {
     content_name: "CAC Registration Landing Page",
@@ -121,8 +309,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById("service")?.addEventListener("change", () => {
-    updateMainWhatsApp();
     const service = document.getElementById("service")?.value || "";
+    populatePackageOptions(service);
+    updateMainWhatsApp();
     track("RegistrationTypeSelected", { service });
   });
 
@@ -137,6 +326,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  document.getElementById("mainWhatsApp")?.addEventListener("click", (event) => {
+    const service = document.getElementById("service")?.value || "";
+    const pkg = document.getElementById("package")?.value || "";
+    if (!service || !pkg) {
+      event.preventDefault();
+      return;
+    }
+    trackLead(service, pkg);
+  });
+
+  document.getElementById("headerWhatsapp")?.addEventListener("click", () => {
+    const service = document.getElementById("service")?.value || "";
+    const pkg = document.getElementById("package")?.value || "";
+    if (service && pkg) trackLead(service, pkg);
+  });
+
   document.querySelectorAll("[data-wa]").forEach(btn => {
     btn.addEventListener("click", () => {
       const service = btn.dataset.service ||
@@ -148,18 +353,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const price = packagePrices[service]?.[pkg] || "";
 
       btn.href = whatsappUrl(service, pkg);
-
-      track("PackageSelected", { service, package: pkg, price });
-
-      track("Lead", {
-        content_name: "WhatsApp Registration Lead",
-        service,
-        package: pkg,
-        value: numericPrice(price),
-        currency: "NGN"
-      });
-
-      track("WhatsAppLead", { service, package: pkg, price });
+      if (service && pkg) trackLead(service, pkg);
+      else track("WhatsAppLead", { service, package: pkg, price });
     });
   });
 
