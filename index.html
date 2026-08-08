@@ -162,20 +162,20 @@ src="https://www.facebook.com/tr?id=1915513149012218&ev=PageView&noscript=1"
           <article class="service-card">
             <h3>Business Name</h3>
             <p>For entrepreneurs who want to formalise a business and build a professional identity.</p>
-            <div class="mini">From <strong>₦34,999</strong></div>
+            <div class="mini">From <strong data-price-service="Business Name" data-price-package="Basic">₦34,999</strong></div>
             <a class="btn outline full" href="#basic-business">View Packages →</a>
           </article>
           <article class="service-card featured">
             <span class="badge">POPULAR</span>
             <h3>Limited Liability Company</h3>
             <p>For businesses ready to operate with a more formal corporate structure.</p>
-            <div class="mini">From <strong>₦65,000</strong></div>
+            <div class="mini">From <strong data-price-service="Limited Company" data-price-package="Basic">₦65,000</strong></div>
             <a class="btn outline full" href="#basic-company">View Packages →</a>
           </article>
           <article class="service-card">
             <h3>NGO / Church / Association</h3>
             <p>Registration support for organisations seeking an Incorporated Trustees structure.</p>
-            <div class="mini">From <strong>₦130,000</strong></div>
+            <div class="mini">From <strong data-price-service="NGO / Incorporated Trustees" data-price-package="Basic">₦130,000</strong></div>
             <a class="btn outline full" href="#basic-ngo">View Packages →</a>
           </article>
         </div>
@@ -204,7 +204,7 @@ src="https://www.facebook.com/tr?id=1915513149012218&ev=PageView&noscript=1"
           <div class="package-grid">
             <article class="package-card">
               <h4>Basic Package</h4>
-              <div class="price">₦34,999</div>
+              <div class="price" data-price-service="Business Name" data-price-package="Basic">₦34,999</div>
               <ul>
                 <li>Business Name Registration</li>
                 <li>CAC Certificate of Registration</li>
@@ -217,7 +217,7 @@ src="https://www.facebook.com/tr?id=1915513149012218&ev=PageView&noscript=1"
             <article class="package-card recommended">
               <span class="badge dark">RECOMMENDED</span>
               <h4>Premium Package</h4>
-              <div class="price">₦45,000</div>
+              <div class="price" data-price-service="Business Name" data-price-package="Premium">₦45,000</div>
               <p class="extra">Everything in Basic, plus:</p>
               <ul>
                 <li>Google Business Profile Setup & Optimization</li>
@@ -236,7 +236,7 @@ src="https://www.facebook.com/tr?id=1915513149012218&ev=PageView&noscript=1"
           <div class="package-grid">
             <article class="package-card">
               <h4>Basic Package</h4>
-              <div class="price">₦65,000</div>
+              <div class="price" data-price-service="Limited Company" data-price-package="Basic">₦65,000</div>
               <ul>
                 <li>Certificate of Incorporation</li>
                 <li>Certified Status Report</li>
@@ -249,7 +249,7 @@ src="https://www.facebook.com/tr?id=1915513149012218&ev=PageView&noscript=1"
             <article class="package-card recommended">
               <span class="badge dark">RECOMMENDED</span>
               <h4>Premium Package</h4>
-              <div class="price">₦84,999</div>
+              <div class="price" data-price-service="Limited Company" data-price-package="Premium">₦84,999</div>
               <p class="extra">Everything in Basic, plus:</p>
               <ul>
                 <li>Google Business Profile Setup & Optimization</li>
@@ -268,7 +268,7 @@ src="https://www.facebook.com/tr?id=1915513149012218&ev=PageView&noscript=1"
           <div class="package-grid">
             <article class="package-card">
               <h4>Basic Package</h4>
-              <div class="price">₦130,000</div>
+              <div class="price" data-price-service="NGO / Incorporated Trustees" data-price-package="Basic">₦130,000</div>
               <ul>
                 <li>Name Availability Search</li>
                 <li>CAC Registration Processing</li>
@@ -284,7 +284,7 @@ src="https://www.facebook.com/tr?id=1915513149012218&ev=PageView&noscript=1"
             <article class="package-card recommended">
               <span class="badge dark">RECOMMENDED</span>
               <h4>Premium Package</h4>
-              <div class="price">₦180,000</div>
+              <div class="price" data-price-service="NGO / Incorporated Trustees" data-price-package="Premium">₦180,000</div>
               <p class="extra">Everything in Basic, plus:</p>
               <ul>
                 <li>Professional NGO Letterhead Design</li>
@@ -355,6 +355,21 @@ src="https://www.facebook.com/tr?id=1915513149012218&ev=PageView&noscript=1"
       </div>
     </section>
 
+    <section class="section alt" id="cities">
+      <div class="container narrow">
+        <div class="section-head">
+          <span class="eyebrow">LOCAL SUPPORT</span>
+          <h2>Need CAC registration support in your city?</h2>
+          <p>Explore dedicated pages for entrepreneurs and organisations in Port Harcourt, Lagos and Abuja.</p>
+        </div>
+        <div class="city-links" aria-label="City-specific CAC registration pages">
+          <a class="city-link-card" href="/port-harcourt-cac-registration.html">Port Harcourt CAC Registration →</a>
+          <a class="city-link-card" href="/lagos-cac-registration.html">Lagos CAC Registration →</a>
+          <a class="city-link-card" href="/abuja-cac-registration.html">Abuja CAC Registration →</a>
+        </div>
+      </div>
+    </section>
+
     <section class="section faq-section" id="faq">
       <div class="container narrow">
         <div class="section-head">
@@ -394,17 +409,15 @@ src="https://www.facebook.com/tr?id=1915513149012218&ev=PageView&noscript=1"
         <div class="selector">
           <label for="service">Registration type</label>
           <select id="service">
-            <option>Business Name</option>
-            <option>Limited Company</option>
-            <option>NGO / Incorporated Trustees</option>
+            <option value="">Select registration type</option>
           </select>
 
           <label for="package">Package</label>
           <select id="package">
-            <option>Basic</option>
-            <option>Premium</option>
+            <option value="">Select package</option>
           </select>
 
+          <p class="selector-price" id="selectedPrice" aria-live="polite">Select your registration type to view package pricing.</p>
           <a class="btn whatsapp full" id="mainWhatsApp" href="#" target="_blank" rel="noopener">Continue on WhatsApp →</a>
           <small>WhatsApp: +234 902 759 1229</small>
         </div>
@@ -413,6 +426,7 @@ src="https://www.facebook.com/tr?id=1915513149012218&ev=PageView&noscript=1"
   </main>
 
   <a class="sticky-wa" href="#" data-wa data-service="Business Name" data-package="Basic">Start Registration on WhatsApp →</a>
+  <button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">↑ Top</button>
 
   <footer>
     <div class="container footer-inner">
